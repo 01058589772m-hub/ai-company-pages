@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Espresso Ratio Checker</title>
+<meta name="description" content="Free espresso ratio and shot-time checker. Enter dose, yield, time and taste to get one next step.">
+<meta property="og:title" content="Espresso ratio &amp; shot-time checker">
+<meta property="og:description" content="Enter dose, yield, time and taste. Get your brew ratio and one thing to change next.">
+<meta property="og:type" content="website">
+<link rel="stylesheet" href="../assets/style.css">
+<style>:root { --accent: #8a3b12; }</style>
+<script src="../assets/config.js"></script>
+</head>
+<body>
+<main>
+  <p class="eyebrow">Free tool</p>
+  <h1>Espresso ratio &amp; shot-time checker</h1>
+  <p class="sub">Enter your last shot. Get the ratio and one thing to change.</p>
+
+  <form id="calc" class="card" novalidate>
+    <div class="row">
+      <div class="field">
+        <label for="dose">Dose (g)</label>
+        <input id="dose" type="number" inputmode="decimal" min="1" max="40" step="0.1" value="18" required>
+      </div>
+      <div class="field">
+        <label for="yield">Yield (g)</label>
+        <input id="yield" type="number" inputmode="decimal" min="1" max="120" step="0.1" value="36" required>
+      </div>
+      <div class="field">
+        <label for="time">Time (s)</label>
+        <input id="time" type="number" inputmode="decimal" min="1" max="120" step="1" value="25" required>
+      </div>
+    </div>
+    <fieldset>
+      <legend>Taste</legend>
+      <label class="radio"><input type="radio" name="taste" value="sour"> Sour</label>
+      <label class="radio"><input type="radio" name="taste" value="balanced" checked> Balanced</label>
+      <label class="radio"><input type="radio" name="taste" value="bitter"> Bitter</label>
+    </fieldset>
+    <div class="field">
+      <label class="check"><input id="pre" type="checkbox"> I use pre-infusion</label>
+    </div>
+    <button type="submit">Check my shot</button>
+
+    <div id="result" class="result" role="status" aria-live="polite" hidden>
+      <p class="ratio" id="r-ratio"></p>
+      <p class="advice" id="r-advice"></p>
+      <p class="detail" id="r-detail"></p>
+    </div>
+  </form>
+
+  <div class="cta">
+    <p style="margin:0">Want the next click for your exact grinder? <a href="index.html">Join the waitlist.</a></p>
+  </div>
+
+  <p class="ref">Targets used: ratio 1:2–1:2.5, shot time 22–28 s (25–30 s with pre-infusion).<br>
+  Reference: <a href="https://kaffeemacher.de/en/blogs/kaffeewissen/espresso-sour" rel="noopener" target="_blank">kaffeemacher espresso guide</a>, checked 2026-10-31.</p>
+</main>
+<footer>
+  <p><a href="../index.html">All pages</a></p>
+</footer>
+<script>
+(function () {
+  var RATIO_MIN = 2, RATIO_MAX = 2.5;
+
+  function advise(dose, yld, time, taste, pre) {
+    var ratio = yld / dose;
+    var lo = pre ? 25 : 22, hi = pre ? 30 : 28;
+    var advice;
+    if (taste === "sour") {
+      if (time < lo) advice = "Grind finer";
+      else if (time <= hi && ratio < RATIO_MIN) advice = "Increase yield toward 1:2–1:2.5";
+      else advice = "Check temperature (~93 °C) and bean age";
+    } else if (taste === "bitter") {
+      if (time > hi) advice = "Grind coarser";
+      else if (ratio > RATIO_MAX) advice = "Reduce yield";
+      else advice = "Lower temperature slightly";
+    } else {
+      advice = "Keep it — change one thing only if you want to explore";
+    }
+    return { ratio: ratio, lo: lo, hi: hi, advice: advice };
+  }
+  window.espressoAdvise = advise;
+
+  var form = document.getElementById("calc");
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+    var dose = parseFloat(document.getElementById("dose").value);
+    var yld = parseFloat(document.getElementById("yield").value);
+    var time = parseFloat(document.getElementById("time").value);
+    var taste = (form.querySelector('input[name="taste"]:checked') || {}).value;
+    var pre = document.getElementById("pre").checked;
+    var box = document.getElementById("result");
+    box.hidden = false;
+    if (!(dose > 0) || !(yld > 0) || !(time > 0) || !taste) {
+      document.getElementById("r-ratio").textContent = "";
+      document.getElementById("r-advice").textContent = "Enter dose, yield and time (all above 0) and pick a taste.";
+      document.getElementById("r-detail").textContent = "";
+      return;
+    }
+    var r = advise(dose, yld, time, taste, pre);
+    document.getElementById("r-ratio").textContent = "1:" + r.ratio.toFixed(1);
+    document.getElementById("r-advice").textContent = r.advice;
+    document.getElementById("r-detail").textContent =
+      "Your shot: " + time + " s (target " + r.lo + "–" + r.hi + " s), ratio 1:" + r.ratio.toFixed(1) + " (target 1:2–1:2.5).";
+  });
+})();
+</script>
+</body>
+</html>

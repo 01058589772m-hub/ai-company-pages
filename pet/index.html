@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>노령 반려동물 케어 기록</title>
+<meta name="description" content="노견·노묘 투약 시간 알림과 상태 기록 앱. 출시되면 가장 먼저 알려 드립니다.">
+<meta property="og:title" content="노견·노묘 약 챙기기, 놓치지 않게.">
+<meta property="og:description" content="투약 시간 알림과 상태 기록을 한곳에. 출시되면 가장 먼저 알려 드립니다.">
+<meta property="og:type" content="website">
+<link rel="stylesheet" href="../assets/style.css">
+<style>:root { --accent: #0f6e63; }</style>
+<script src="../assets/config.js"></script>
+</head>
+<body>
+<main>
+  <p class="eyebrow">노령 반려동물 투약·케어 기록 앱</p>
+  <h1>노견·노묘 약 챙기기, 놓치지 않게.</h1>
+  <p class="sub">투약 시간 알림과 상태 기록을 한곳에. 출시되면 가장 먼저 알려 드립니다.</p>
+
+  <div class="card">
+    <form data-waitlist data-status="wl-status"
+          data-soon="곧 열립니다. 아직 신청이 접수되지 않았습니다."
+          data-thanks="신청해 주셔서 감사합니다. 출시되면 알려 드릴게요."
+          data-error="접수되지 않았습니다. 잠시 후 다시 시도해 주세요.">
+      <input type="hidden" name="item" value="pet">
+      <input type="hidden" name="_subject" value="대기자 신청: pet">
+      <div class="field">
+        <label for="email">이메일</label>
+        <input id="email" name="email" type="email" required autocomplete="email" placeholder="you@example.com">
+      </div>
+      <fieldset>
+        <legend>반려동물 <span class="opt">(선택)</span></legend>
+        <label class="radio"><input type="radio" name="pet_type" value="dog"> 강아지</label>
+        <label class="radio"><input type="radio" name="pet_type" value="cat"> 고양이</label>
+        <label class="radio"><input type="radio" name="pet_type" value="other"> 기타</label>
+      </fieldset>
+      <button type="submit">출시 알림 받기</button>
+      <p class="notice">이메일은 출시 안내에만 쓰고, 수신 거부 시 또는 수집 후 12개월이 지나면 삭제합니다.</p>
+    </form>
+    <p id="wl-status" class="status" role="status" aria-live="polite" hidden></p>
+  </div>
+</main>
+<footer>
+  <p>이 앱은 수의사의 진료를 대신하지 않습니다.</p>
+  <p><a href="../index.html">전체 페이지</a></p>
+</footer>
+<script src="../assets/form.js"></script>
+</body>
+</html>

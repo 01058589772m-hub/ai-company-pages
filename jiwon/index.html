@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>정부지원사업 공고 알림</title>
+<meta name="description" content="업종·지역·업력을 알려 주시면 맞는 정부지원사업 공고를 골라 마감 전에 알려 드립니다.">
+<meta property="og:title" content="우리 가게가 받을 수 있는 지원사업만, 마감 전에.">
+<meta property="og:description" content="업종·지역·업력을 알려 주시면 맞는 공고를 골라 알려 드립니다.">
+<meta property="og:type" content="website">
+<link rel="stylesheet" href="../assets/style.css">
+<style>:root { --accent: #1d4ed8; }</style>
+<script src="../assets/config.js"></script>
+</head>
+<body>
+<main>
+  <p class="eyebrow">정부지원사업 공고 알림</p>
+  <h1>우리 가게가 받을 수 있는 지원사업만, 마감 전에.</h1>
+  <p class="sub">업종·지역·업력을 알려 주시면 맞는 공고를 골라 알려 드립니다.</p>
+
+  <div class="card">
+    <form data-waitlist data-status="wl-status"
+          data-soon="곧 열립니다. 아직 신청이 접수되지 않았습니다."
+          data-thanks="신청해 주셔서 감사합니다. 서비스가 열리면 알려 드릴게요."
+          data-error="접수되지 않았습니다. 잠시 후 다시 시도해 주세요.">
+      <input type="hidden" name="item" value="jiwon">
+      <input type="hidden" name="_subject" value="대기자 신청: jiwon">
+      <div class="field">
+        <label for="email">이메일</label>
+        <input id="email" name="email" type="email" required autocomplete="email" placeholder="you@example.com">
+      </div>
+      <div class="field">
+        <label for="industry">업종</label>
+        <input id="industry" name="industry" type="text" maxlength="60" placeholder="예: 카페, 음식점, 온라인 쇼핑몰">
+      </div>
+      <div class="field">
+        <label for="region">지역</label>
+        <select id="region" name="region">
+          <option value="">선택해 주세요</option>
+          <option>서울특별시</option><option>부산광역시</option><option>대구광역시</option>
+          <option>인천광역시</option><option>광주광역시</option><option>대전광역시</option>
+          <option>울산광역시</option><option>세종특별자치시</option><option>경기도</option>
+          <option>강원특별자치도</option><option>충청북도</option><option>충청남도</option>
+          <option>전북특별자치도</option><option>전라남도</option><option>경상북도</option>
+          <option>경상남도</option><option>제주특별자치도</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="years">업력</label>
+        <select id="years" name="years">
+          <option value="">선택해 주세요</option>
+          <option>예비창업</option><option>1년 미만</option><option>1~3년</option>
+          <option>3~7년</option><option>7년 이상</option>
+        </select>
+      </div>
+      <button type="submit">알림 신청하기</button>
+      <p class="notice">이메일은 출시 안내에만 쓰고, 수신 거부 시 또는 수집 후 12개월이 지나면 삭제합니다.</p>
+    </form>
+    <p id="wl-status" class="status" role="status" aria-live="polite" hidden></p>
+  </div>
+</main>
+<footer>
+  <p>공고 원문은 기업마당 등 공식 기관에서 확인하세요. 신청 자격 판정은 하지 않습니다.</p>
+  <p>공고 정보 출처: 기업마당(<a href="https://www.bizinfo.go.kr" rel="noopener" target="_blank">bizinfo.go.kr</a>)</p>
+  <p><a href="../index.html">전체 페이지</a></p>
+</footer>
+<script src="../assets/form.js"></script>
+</body>
+</html>

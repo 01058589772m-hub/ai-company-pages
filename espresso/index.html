@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Espresso Dial-in Helper</title>
+<meta name="description" content="Tell us your grinder and your last shot. We'll tell you what to change next. Join the waitlist.">
+<meta property="og:title" content="Know your next click.">
+<meta property="og:description" content="Tell us your grinder and your last shot. We'll tell you what to change next.">
+<meta property="og:type" content="website">
+<link rel="stylesheet" href="../assets/style.css">
+<style>:root { --accent: #8a3b12; }</style>
+<script src="../assets/config.js"></script>
+</head>
+<body>
+<main>
+  <p class="eyebrow">Espresso dial-in helper</p>
+  <h1>Know your next click.</h1>
+  <p class="sub">Tell us your grinder and your last shot. We'll tell you what to change next.</p>
+  <ul class="points">
+    <li>Your grinder's own settings</li>
+    <li>One change at a time</li>
+    <li>Your notes saved and backed up</li>
+  </ul>
+
+  <div class="card">
+    <form data-waitlist data-status="wl-status" data-referral="wl-referral"
+          data-soon="Waitlist opens soon. Nothing was sent; please check back."
+          data-thanks="Thanks, you're on the list."
+          data-error="Something went wrong and you were not added. Please try again.">
+      <input type="hidden" name="item" value="espresso">
+      <input type="hidden" name="_subject" value="Waitlist: espresso">
+      <div class="field">
+        <label for="email">Email</label>
+        <input id="email" name="email" type="email" required autocomplete="email" placeholder="you@example.com">
+      </div>
+      <div class="field">
+        <label for="grinder">Grinder model <span class="opt">(optional)</span></label>
+        <input id="grinder" name="grinder" type="text" maxlength="100" placeholder="e.g. Niche Zero">
+      </div>
+      <fieldset>
+        <legend>How would you prefer to pay? <span class="opt">(optional)</span></legend>
+        <label class="radio"><input type="radio" name="pricing" value="one-time"> One-time purchase</label>
+        <label class="radio"><input type="radio" name="pricing" value="free-limits"> Free with limits</label>
+        <label class="radio"><input type="radio" name="pricing" value="subscription"> Subscription</label>
+      </fieldset>
+      <button type="submit">Join the waitlist</button>
+      <p class="notice">We collect your email only to tell you when the app is ready. We delete it if you unsubscribe, or 12 months after collection, whichever comes first.</p>
+    </form>
+    <p id="wl-status" class="status" role="status" aria-live="polite" hidden></p>
+    <div id="wl-referral" class="referral" hidden>
+      <p>Share your link — each friend who joins moves you up the list.</p>
+      <a data-share-link href="#"></a>
+    </div>
+  </div>
+
+  <h2>Free tool</h2>
+  <p><a href="calculator.html">Espresso ratio &amp; shot-time checker</a></p>
+</main>
+<footer>
+  <p><a href="../index.html">All pages</a></p>
+</footer>
+<script src="../assets/form.js"></script>
+</body>
+</html>
