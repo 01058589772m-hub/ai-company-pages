@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>배달·대리 기사 시간당 실수입 계산기</title>
+<meta name="description" content="배달 수입에서 수수료·기름값·보험료·세금을 빼고 실제 시급을 계산하는 무료 계산기.">
+<meta property="og:title" content="오늘 번 돈, 시간당 얼마 남았을까?">
+<meta property="og:description" content="배달 수입에서 수수료·기름값·보험료·세금을 빼고 실제 시급을 계산합니다.">
+<meta property="og:type" content="website">
+<link rel="stylesheet" href="../assets/style.css">
+<style>
+  :root { --accent: #c2410c; }
+  .breakdown { list-style: none; padding: 0; margin: 12px 0 0; font-variant-numeric: tabular-nums; }
+  .breakdown li { display: flex; justify-content: space-between; gap: 12px; padding: 6px 0; border-bottom: 1px solid var(--line); }
+  .breakdown li:last-child { border-bottom: 0; font-weight: 700; }
+  .breakdown span:last-child { text-align: right; white-space: nowrap; }
+  .neg { color: var(--err); }
+  .help { font-size: .875rem; color: var(--muted); margin: 6px 0 0; }
+  .wl-title { font-size: 1.15rem; margin: 0 0 4px; }
+  .wl-sub { color: var(--muted); margin: 0 0 16px; }
+  .checks .check { padding: 6px 0; margin: 0; }
+</style>
+<script src="../assets/config.js"></script>
+</head>
+<body>
+<main>
+  <p class="eyebrow">배달·대리 기사 시간당 실수입 계산기</p>
+  <h1>오늘 번 돈, 시간당 얼마 남았을까?</h1>
+  <p class="sub">배달 수입에서 수수료·기름값·보험료·세금을 빼고 실제 시급을 계산합니다.</p>
+
+  <form id="calc" class="card" novalidate>
+    <fieldset>
+      <legend>기간</legend>
+      <label class="radio"><input type="radio" name="period" value="day" checked> 하루</label>
+      <label class="radio"><input type="radio" name="period" value="week"> 일주일</label>
+    </fieldset>
+    <div class="field">
+      <label for="gross">총 배달 수입 (정산 전 금액, 원)</label>
+      <input id="gross" type="number" inputmode="numeric" min="0" step="1" placeholder="예: 200000">
+    </div>
+    <div class="field">
+      <label for="fee">플랫폼·대행 수수료 (원)</label>
+      <input id="fee" type="number" inputmode="numeric" min="0" step="1" placeholder="0">
+    </div>
+    <div class="field">
+      <label for="fuel">기름값·충전비 (원)</label>
+      <input id="fuel" type="number" inputmode="numeric" min="0" step="1" placeholder="0">
+    </div>
+    <div class="field">
+      <label for="vehicle">보험료·리스·렌트 등 차량 비용 (원, 해당 기간분)</label>
+      <input id="vehicle" type="number" inputmode="numeric" min="0" step="1" placeholder="0">
+    </div>
+    <div class="field">
+      <label for="other">기타 비용 (원)</label>
+      <input id="other" type="number" inputmode="numeric" min="0" step="1" placeholder="0">
+    </div>
+    <div class="field">
+      <label for="tax">세금 등으로 떼어 둘 비율 (%) <span class="opt">(선택)</span></label>
+      <input id="tax" type="number" inputmode="decimal" min="0" max="100" step="0.1" aria-describedby="tax-help">
+      <p id="tax-help" class="help">본인이 따로 모아 두는 비율을 넣으세요. 정확한 세액은 세무 신고 때 확정됩니다.</p>
+    </div>
+    <div class="field">
+      <label for="hours">일한 시간 (시간)</label>
+      <input id="hours" type="number" inputmode="decimal" min="0" step="0.1" placeholder="예: 8.5">
+    </div>
+    <button type="submit">실수입 계산하기</button>
+
+    <div id="result" class="result" role="status" aria-live="polite" hidden>
+      <p class="detail" id="r-label" style="margin:0"></p>
+      <p class="ratio" id="r-hourly"></p>
+      <p class="advice" id="r-compare"></p>
+      <ul class="breakdown" id="r-breakdown"></ul>
+      <p class="detail" id="r-note"></p>
+    </div>
+  </form>
+
+  <p class="ref">출처: 최저임금위원회 고시(2026년 적용 최저임금 10,320원)</p>
+
+  <div class="card" style="margin-top:24px">
+    <form data-waitlist data-status="wl-status"
+          data-soon="곧 열립니다. 아직 신청이 접수되지 않았습니다."
+          data-thanks="신청해 주셔서 감사합니다. 출시되면 알려 드릴게요."
+          data-error="접수되지 않았습니다. 잠시 후 다시 시도해 주세요.">
+      <input type="hidden" name="item" value="driver">
+      <input type="hidden" name="_subject" value="Waitlist: driver">
+      <h2 class="wl-title">배민·쿠팡 정산 주기에 맞춘 주간 장부, 준비 중입니다.</h2>
+      <p class="wl-sub">매주 정산일 기준으로 실수입과 시급을 자동으로 정리해 드립니다.</p>
+      <div class="field">
+        <label for="email">이메일</label>
+        <input id="email" name="email" type="email" required autocomplete="email" placeholder="you@example.com">
+      </div>
+      <fieldset class="checks">
+        <legend>주로 쓰는 플랫폼 <span class="opt">(선택)</span></legend>
+        <label class="check"><input type="checkbox" name="platform" value="baemin"> 배민</label>
+        <label class="check"><input type="checkbox" name="platform" value="coupangeats"> 쿠팡이츠</label>
+        <label class="check"><input type="checkbox" name="platform" value="yogiyo"> 요기요</label>
+        <label class="check"><input type="checkbox" name="platform" value="kakaot_daeri"> 카카오T 대리</label>
+        <label class="check"><input type="checkbox" name="platform" value="other"> 기타</label>
+      </fieldset>
+      <button type="submit">출시 알림 받기</button>
+      <p class="notice">이메일은 출시 안내에만 쓰고, 수신 거부 시 또는 수집 후 12개월이 지나면 삭제합니다.</p>
+    </form>
+    <p id="wl-status" class="status" role="status" aria-live="polite" hidden></p>
+  </div>
+</main>
+<footer>
+  <p>이 계산기는 참고용이며 세무 상담을 대신하지 않습니다.</p>
+  <p><a href="../index.html">전체 페이지</a></p>
+</footer>
+<script>
+(function () {
+  // 2026년 적용 최저임금 (최저임금위원회 고시). 페이지에서 유일한 고정 숫자.
+  var MIN_WAGE_2026 = 10320;
+
+  function num(id) {
+    var v = parseFloat(document.getElementById(id).value);
+    return isFinite(v) ? v : 0;
+  }
+  function won(n) {
+    var r = Math.round(n);
+    var s = Math.abs(r).toLocaleString("ko-KR");
+    return (r < 0 ? "−" : "") + s + "원";
+  }
+  function signedWon(n) {
+    var r = Math.round(n);
+    return (r > 0 ? "+" : "") + won(r);
+  }
+
+  function calc(v) {
+    var costs = v.fee + v.fuel + v.vehicle + v.other;
+    var beforeTax = v.gross - costs;
+    // 세금 비율은 비용을 뺀 금액에 적용. 손실일 때는 떼어 둘 금액이 없으므로 0.
+    var taxAmt = beforeTax > 0 ? beforeTax * (v.taxRate / 100) : 0;
+    var net = beforeTax - taxAmt;
+    var hourly = Math.round(net / v.hours);
+    return { costs: costs, beforeTax: beforeTax, taxAmt: taxAmt, net: net, hourly: hourly, diff: hourly - MIN_WAGE_2026 };
+  }
+  window.driverCalc = calc;
+
+  var form = document.getElementById("calc");
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+    var box = document.getElementById("result");
+    var elHourly = document.getElementById("r-hourly");
+    var elCompare = document.getElementById("r-compare");
+    var elList = document.getElementById("r-breakdown");
+    var elLabel = document.getElementById("r-label");
+    var elNote = document.getElementById("r-note");
+    box.hidden = false;
+    elList.innerHTML = "";
+
+    var hours = num("hours");
+    if (!(hours > 0)) {
+      elLabel.textContent = "";
+      elHourly.textContent = "";
+      elHourly.className = "ratio";
+      elCompare.textContent = "일한 시간을 0보다 크게 입력해 주세요.";
+      elCompare.className = "advice";
+      elNote.textContent = "시간을 넣어야 시간당 실수입을 계산할 수 있어요.";
+      return;
+    }
+
+    var period = (form.querySelector('input[name="period"]:checked') || {}).value === "week" ? "일주일" : "하루";
+    var v = {
+      gross: num("gross"), fee: num("fee"), fuel: num("fuel"),
+      vehicle: num("vehicle"), other: num("other"), taxRate: num("tax"), hours: hours
+    };
+    var r = calc(v);
+
+    elLabel.textContent = period + " 기준 시간당 실수입";
+    elHourly.textContent = won(r.hourly);
+    elHourly.className = "ratio" + (r.hourly < 0 ? " neg" : "");
+    elCompare.textContent = "2026년 최저시급 10,320원과 비교: " + signedWon(r.diff);
+    elCompare.className = "advice" + (r.diff < 0 ? " neg" : "");
+
+    var rows = [
+      ["총 배달 수입", won(v.gross)],
+      ["플랫폼·대행 수수료", won(-v.fee)],
+      ["기름값·충전비", won(-v.fuel)],
+      ["차량 비용", won(-v.vehicle)],
+      ["기타 비용", won(-v.other)],
+      ["세금 등 떼어 둘 금액 (" + v.taxRate + "%)", won(-r.taxAmt)],
+      ["일한 시간", v.hours + "시간"],
+      [period + " 순수입", won(r.net)]
+    ];
+    rows.forEach(function (row) {
+      var li = document.createElement("li");
+      var a = document.createElement("span"); a.textContent = row[0];
+      var b = document.createElement("span"); b.textContent = row[1];
+      if (row[1].charAt(0) === "−" && row === rows[rows.length - 1]) b.className = "neg";
+      li.appendChild(a); li.appendChild(b);
+      elList.appendChild(li);
+    });
+    elNote.textContent = r.net < 0
+      ? "비용이 수입보다 많아 손실입니다. 입력값을 다시 확인해 보세요."
+      : "입력하신 숫자만으로 계산했습니다. 세금 비율을 비워 두면 0%로 계산합니다.";
+  });
+})();
+</script>
+<script src="../assets/form.js"></script>
+</body>
+</html>
