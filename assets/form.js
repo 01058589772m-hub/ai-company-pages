@@ -48,9 +48,12 @@
       }
 
       btn.disabled = true;
+      var ctrl = window.AbortController ? new AbortController() : null;
+      if (ctrl) setTimeout(function () { ctrl.abort(); }, 20000);
       fetch(window.FORM_ENDPOINT, {
         method: "POST",
         mode: "cors",
+        signal: ctrl ? ctrl.signal : undefined,
         headers: { Accept: "application/json" },
         body: new FormData(form)
       })
