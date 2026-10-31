@@ -1,5 +1,5 @@
 // ---- Site config (edit these two lines only) ----
-window.FORM_ENDPOINT = "https://formsubmit.co/ajax/01058589772m@gmail.com"; // e.g. a Formspree/Getform endpoint. Empty = waitlist not open yet.
+window.FORM_ENDPOINT = "https://formsubmit.co/ajax/a0f270faa126a0c114a14e0949ec670f"; // e.g. a Formspree/Getform endpoint. Empty = waitlist not open yet.
 window.GA_ID = "";         // e.g. "G-XXXXXXX". Empty = no analytics loaded.
 // --------------------------------------------------
 
