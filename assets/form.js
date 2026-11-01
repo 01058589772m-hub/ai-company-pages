@@ -49,7 +49,8 @@
       e.preventDefault();
       if (!form.reportValidity()) return;
 
-      if (!window.FORM_ENDPOINT) {
+      var endpoint = form.dataset.endpoint || window.FORM_ENDPOINT;
+      if (!endpoint) {
         show(form.dataset.soon, "info");
         return;
       }
@@ -57,7 +58,7 @@
       btn.disabled = true;
       var ctrl = window.AbortController ? new AbortController() : null;
       if (ctrl) setTimeout(function () { ctrl.abort(); }, 20000);
-      fetch(window.FORM_ENDPOINT, {
+      fetch(endpoint, {
         method: "POST",
         mode: "cors",
         signal: ctrl ? ctrl.signal : undefined,
