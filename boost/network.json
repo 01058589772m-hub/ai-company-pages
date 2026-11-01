@@ -1,0 +1,77 @@
+{
+  "version": 1,
+  "updated": "2026-11-01",
+  "note": "Real member apps only. 'url' is absolute, or relative to this file. Members are added by hand after review.",
+  "members": [
+    {
+      "id": "espresso",
+      "name": "Espresso dial-in helper",
+      "url": "../espresso/",
+      "lang": "en",
+      "category": "coffee",
+      "tagline_en": "Set up once. Every bean keeps the setting that worked.",
+      "tagline_ko": "한 번 설정하면, 원두마다 잘 됐던 세팅을 기억합니다.",
+      "joined": "2026-10-31"
+    },
+    {
+      "id": "espresso-calc",
+      "name": "Free espresso shot checker",
+      "url": "../espresso/calculator.html",
+      "lang": "en",
+      "category": "coffee",
+      "tagline_en": "Ratio and shot time in seconds, plus one thing to try next.",
+      "tagline_ko": "추출 비율과 시간을 바로 확인하고, 다음에 바꿔 볼 한 가지를 알려 줍니다.",
+      "joined": "2026-10-31"
+    },
+    {
+      "id": "boost",
+      "name": "Boostring",
+      "url": "../boost/",
+      "lang": "en",
+      "category": "makers",
+      "tagline_en": "Free app-to-app recommendations for apps built with AI. One script tag.",
+      "tagline_ko": "AI로 만든 서비스끼리 서로 소개해 주는 무료 위젯. 스크립트 한 줄.",
+      "joined": "2026-11-01"
+    },
+    {
+      "id": "driver",
+      "name": "배달·대리 기사 실수입 계산기",
+      "url": "../driver/",
+      "lang": "ko",
+      "category": "money",
+      "tagline_en": "Real hourly earnings for delivery drivers after fees, fuel and tax.",
+      "tagline_ko": "수수료·기름값·세금 빼고 진짜 시급을 계산합니다.",
+      "joined": "2026-11-01"
+    },
+    {
+      "id": "pet",
+      "name": "노견·노묘 투약 기록 앱",
+      "url": "../pet/",
+      "lang": "ko",
+      "category": "pets",
+      "tagline_en": "Medication reminders and health notes for senior dogs and cats.",
+      "tagline_ko": "약 먹일 시간 알림과 상태 기록. 기록 내보내기는 언제나 무료.",
+      "joined": "2026-10-31"
+    },
+    {
+      "id": "jiwon",
+      "name": "지원사업 공고 알림",
+      "url": "../jiwon/",
+      "lang": "ko",
+      "category": "money",
+      "tagline_en": "Only the government grants your small business qualifies for, before the deadline.",
+      "tagline_ko": "우리 가게가 받을 수 있는 지원사업만, 마감 전에.",
+      "joined": "2026-10-31"
+    },
+    {
+      "id": "silsuryeong",
+      "name": "실수령닷컴",
+      "url": "https://실수령.com/",
+      "lang": "ko",
+      "category": "money",
+      "tagline_en": "Korean take-home pay, social insurance, holiday pay and severance calculators.",
+      "tagline_ko": "연봉·시급 실수령액, 4대보험·주휴수당·퇴직금 계산기.",
+      "joined": "2026-09-01"
+    }
+  ]
+}

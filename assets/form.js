@@ -25,7 +25,13 @@
   function init(form) {
     var params = new URLSearchParams(window.location.search);
     var incoming = (params.get("ref") || "").replace(/[^a-z0-9]/gi, "").slice(0, 16);
-    var myCode = randomCode();
+    // Reuse the visitor's stored code (shared with boost/boostring.js) so one person keeps one referral link.
+    var myCode = null;
+    try { myCode = window.localStorage.getItem("boostring:ref"); } catch (e) { myCode = null; }
+    if (!myCode || !/^[a-z0-9]{6,16}$/.test(myCode)) {
+      myCode = randomCode();
+      try { window.localStorage.setItem("boostring:ref", myCode); } catch (e) { /* storage blocked */ }
+    }
     setHidden(form, "ref", incoming);
     setHidden(form, "my_ref", myCode);
     setHidden(form, "from", (params.get("from") || "").replace(/[^a-z0-9-]/gi, "").slice(0, 24));
@@ -74,6 +80,7 @@
             a.textContent = link;
             ref.hidden = false;
           }
+          try { document.dispatchEvent(new CustomEvent("boostring:signup")); } catch (e) { /* old browser */ }
         })
         .catch(function () {
           btn.disabled = false;

@@ -1,0 +1,39 @@
+# Boostring
+
+> Boostring is a free, single-file JavaScript widget that shows up to 3 recommended indie apps on a website, plus a "share this app" button and an on-device return-visit streak. Every member site recommends the others ("give to get"). No account, no API key, no cookies, no tracking.
+
+## Install
+
+Add this one line right before </body> on every page of the site:
+
+<script src="https://01058589772m-hub.github.io/ai-company-pages/boost/boostring.js" data-site="myapp" async></script>
+
+Replace "myapp" with a short id for the site (lowercase letters, numbers, dashes). Change nothing else. No build step, no npm package, no environment variables, no keys.
+
+## Options (all optional except data-site)
+
+- data-site: short id for this site. Used as ?from=<id> on outgoing links and to never recommend the site itself.
+- data-lang: "en" or "ko". Default: taken from <html lang>.
+- data-mode: "launcher" (default; floating button in the bottom-right corner that opens a panel), "inline" (renders inside <div id="boostring"></div>, which you place where you want it), or "both".
+- data-accent: hex colour for buttons, e.g. "#c2410c". Default "#4f46e5".
+- data-category: "coffee", "money", "pets" or "makers". Same-category apps are preferred.
+
+For inline mode, also add <div id="boostring"></div> where the panel should appear (for example at the end of the main content).
+
+## Behaviour
+
+- Loads https://01058589772m-hub.github.io/ai-company-pages/boost/network.json (the public list of member apps). This is the only network request.
+- Shows up to 3 member apps: same language first, same category preferred, never the host site. Order rotates daily.
+- Outgoing links get ?from=<data-site>&via=boostring.
+- If the page has a waitlist form and fires document.dispatchEvent(new CustomEvent('boostring:signup')) after a successful signup, the panel opens with "While you wait — apps you might like".
+- Streak and referral code are stored only in the visitor's localStorage. Points have no cash value and are not transferable.
+- All UI lives in a shadow root: it does not change the host page's CSS or layout. Supports dark mode, reduced motion, keyboard (Esc closes the panel) and 360px-wide screens.
+
+## Getting recommended on other sites
+
+Installing the script shows member apps on your site immediately. To be shown on other member sites, join at https://01058589772m-hub.github.io/ai-company-pages/boost/ — each app is reviewed by hand before being added to network.json.
+
+## Links
+
+- Install page: https://01058589772m-hub.github.io/ai-company-pages/boost/install.html
+- Member list: https://01058589772m-hub.github.io/ai-company-pages/boost/network.json

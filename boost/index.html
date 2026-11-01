@@ -13,9 +13,17 @@
   :root { --accent: #4f46e5; }
   input[type=url] { width: 100%; font: inherit; padding: 12px; border: 1px solid #a8a29e; border-radius: 8px; background: #fff; color: var(--text); }
   input[type=url]:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
-  ol.steps { padding-left: 1.4em; margin: 0 0 28px; }
-  ol.steps li { padding: 4px 0; }
-  ol.steps code { font-size: .9em; background: var(--surface); padding: 1px 5px; border-radius: 4px; }
+  .how { list-style: none; padding: 0; margin: 0 0 16px; display: grid; gap: 10px; counter-reset: s; }
+  .how li { display: flex; gap: 12px; align-items: flex-start; padding: 12px; background: var(--surface); border-radius: 12px; }
+  .how svg { width: 40px; height: 40px; flex: none; color: var(--accent); }
+  .how b { display: block; }
+  .how span { color: var(--muted); font-size: .95rem; }
+  .how code, .faq code { font-size: .9em; background: #fff; padding: 1px 5px; border-radius: 4px; white-space: nowrap; }
+  .why { font-weight: 700; margin: 0 0 8px; }
+  .links { margin: 0 0 28px; }
+  .faq details { border-bottom: 1px solid var(--line); padding: 10px 0; }
+  .faq summary { font-weight: 700; cursor: pointer; }
+  .faq p { margin: 8px 0 0; color: var(--muted); }
   .honest { font-size: .875rem; color: var(--muted); margin: 12px 0 0; }
 </style>
 <script src="../assets/config.js"></script>
@@ -32,11 +40,22 @@
   </ul>
 
   <h2>How it works</h2>
-  <ol class="steps">
-    <li>Paste one script tag (or tell Lovable/Bolt/Cursor/Claude Code: <code>"add Boostring"</code>)</li>
-    <li>Pick what to show: waitlist, referral, points, recommendations</li>
-    <li>Watch signups come from your users and from other apps</li>
+  <ol class="how">
+    <li>
+      <svg viewBox="0 0 40 40" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="8" width="32" height="24" rx="4"/><path d="M15 16l-4 4 4 4M25 16l4 4-4 4M22 14l-4 12"/></svg>
+      <div><b>1. Paste one line</b><span>Add one script tag before <code>&lt;/body&gt;</code>, or ask Lovable, Bolt, Cursor, Claude Code, Replit or v0 to do it. No account, no keys.</span></div>
+    </li>
+    <li>
+      <svg viewBox="0 0 40 40" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="6" width="30" height="8" rx="2"/><rect x="5" y="17" width="30" height="8" rx="2"/><rect x="5" y="28" width="30" height="8" rx="2"/></svg>
+      <div><b>2. Your site shows 3 member apps</b><span>A small button opens a panel with up to 3 apps in your visitors' language, a "share this app" button and an on-device return-visit streak.</span></div>
+    </li>
+    <li>
+      <svg viewBox="0 0 40 40" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="20" cy="9" r="5"/><circle cx="9" cy="30" r="5"/><circle cx="31" cy="30" r="5"/><path d="M17 13l-5 12M23 13l5 12M14 30h12"/></svg>
+      <div><b>3. Your app gets shown on theirs</b><span>Join the list below. We review each app by hand and add it to the network, so it rotates into the panels on other member sites.</span></div>
+    </li>
   </ol>
+  <p class="why">Why it's free: you show 3 apps, you get shown on others. Give to get.</p>
+  <p class="links"><a href="install.html">Install in 60 seconds</a> · <a href="install.html#demo">See the live demo</a> · <a href="llms.txt">llms.txt for AI builders</a></p>
 
   <div class="card">
     <form data-waitlist data-status="wl-status" data-referral="wl-referral"
@@ -76,13 +95,38 @@
       <p>Share your link — each friend who joins moves you up the list.</p>
       <a data-share-link href="#"></a>
     </div>
-    <p class="honest">Early access is free. Not live yet — we'll email you when it is.</p>
+    <p class="honest">The recommendation widget works today (v0.2). Waitlist, referral tracking and a dashboard are not built yet — we'll email you when they are.</p>
   </div>
+
+  <h2>FAQ</h2>
+  <div class="faq">
+    <details>
+      <summary>Is it really free?</summary>
+      <p>Yes. The script, the recommendations and being recommended on other member sites cost nothing. There is no card to enter and no account to make.</p>
+    </details>
+    <details>
+      <summary>Do you track my users?</summary>
+      <p>No. No cookies, no tracking pixels, no analytics. The script makes one request: <code>network.json</code> from the same place the script is served. The streak and referral code are kept in your visitor's browser (localStorage) and never sent to us.</p>
+    </details>
+    <details>
+      <summary>What apps will be shown on my site?</summary>
+      <p>Only apps in the network, which we vet by hand. Same language as your page first, same category preferred, never your own app. The order rotates daily so every member gets seen. The full list is public in <a href="network.json">network.json</a>.</p>
+    </details>
+    <details>
+      <summary>How do I install with AI?</summary>
+      <p>Tell your builder: "Add this script tag right before &lt;/body&gt; on every page of my site" and paste the line. Ready-made prompts for each tool are on the <a href="install.html">install page</a>.</p>
+    </details>
+    <details>
+      <summary>What does it cost later?</summary>
+      <p>Paid plans may come later for extras such as a dashboard. The core recommendation exchange stays free. If anything changes we'll tell you by email first.</p>
+    </details>
+  </div>
+  <div id="boostring"></div>
 </main>
 <footer>
   <p><a href="../index.html">All pages</a></p>
 </footer>
 <script src="../assets/form.js"></script>
-<script src="../assets/recs.js" data-item="boost"></script>
+<script src="boostring.js" data-site="boost" data-mode="both" data-accent="#4f46e5" async></script>
 </body>
 </html>
