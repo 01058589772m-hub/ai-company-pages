@@ -63,7 +63,8 @@
         mode: "cors",
         signal: ctrl ? ctrl.signal : undefined,
         headers: { Accept: "application/json" },
-        body: new FormData(form)
+        // Apps Script web app: send as a simple URL-encoded request (no CORS preflight)
+        body: form.dataset.endpointType === "gas" ? new URLSearchParams(new FormData(form)) : new FormData(form)
       })
         .then(function (res) {
           if (!res.ok) throw new Error("HTTP " + res.status);
