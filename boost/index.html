@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Boostring: free growth widget for AI-built apps</title>
+<meta name="description" content="Add a waitlist, referral links, return-visit points and a spot where other indie apps recommend yours with one line of code. Free to start. Join the early access list.">
+<meta property="og:title" content="One line of code. Your app starts promoting itself.">
+<meta property="og:description" content="Boostring adds a waitlist, referral links, return-visit points and indie app recommendations to apps built with AI tools. Free to start.">
+<meta property="og:type" content="website">
+<link rel="stylesheet" href="../assets/style.css">
+<style>
+  :root { --accent: #4f46e5; }
+  input[type=url] { width: 100%; font: inherit; padding: 12px; border: 1px solid #a8a29e; border-radius: 8px; background: #fff; color: var(--text); }
+  input[type=url]:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+  ol.steps { padding-left: 1.4em; margin: 0 0 28px; }
+  ol.steps li { padding: 4px 0; }
+  ol.steps code { font-size: .9em; background: var(--surface); padding: 1px 5px; border-radius: 4px; }
+  .honest { font-size: .875rem; color: var(--muted); margin: 12px 0 0; }
+</style>
+<script src="../assets/config.js"></script>
+</head>
+<body>
+<main>
+  <p class="eyebrow">For apps built with AI</p>
+  <h1>One line of code. Your app starts promoting itself.</h1>
+  <p class="sub">Add a waitlist, referral links, return-visit points and a spot where other indie apps recommend yours — free to start.</p>
+  <ul class="points">
+    <li>Install by pasting one line — or just ask your AI builder to add it</li>
+    <li>Every app in the network recommends the others: more apps, more visitors for everyone</li>
+    <li>No cookies, no tracking pixels. Email only.</li>
+  </ul>
+
+  <h2>How it works</h2>
+  <ol class="steps">
+    <li>Paste one script tag (or tell Lovable/Bolt/Cursor/Claude Code: <code>"add Boostring"</code>)</li>
+    <li>Pick what to show: waitlist, referral, points, recommendations</li>
+    <li>Watch signups come from your users and from other apps</li>
+  </ol>
+
+  <div class="card">
+    <form data-waitlist data-status="wl-status" data-referral="wl-referral"
+          data-soon="Waitlist opens soon. Nothing was sent; please check back."
+          data-thanks="Thanks, you're on the list."
+          data-error="Something went wrong and you were not added. Please try again.">
+      <input type="hidden" name="item" value="boost">
+      <input type="hidden" name="_subject" value="Waitlist: boost">
+      <div class="field">
+        <label for="email">Email</label>
+        <input id="email" name="email" type="email" required autocomplete="email" placeholder="you@example.com">
+      </div>
+      <div class="field">
+        <label for="site">Your app or site URL <span class="opt">(optional)</span></label>
+        <input id="site" name="site" type="url" maxlength="200" autocomplete="url" placeholder="https://yourapp.com">
+      </div>
+      <div class="field">
+        <label for="builder">Built with <span class="opt">(optional)</span></label>
+        <select id="builder" name="builder">
+          <option value="">Select one</option>
+          <option>Lovable</option><option>Bolt</option><option>Replit</option>
+          <option>Cursor</option><option>Claude Code</option><option>v0</option>
+          <option>Base44</option><option>Other</option>
+        </select>
+      </div>
+      <fieldset>
+        <legend>What do you want most? <span class="opt">(optional)</span></legend>
+        <label class="radio"><input type="radio" name="goal" value="more-signups"> More signups</label>
+        <label class="radio"><input type="radio" name="goal" value="users-coming-back"> Users coming back</label>
+        <label class="radio"><input type="radio" name="goal" value="visitors-from-other-apps"> Visitors from other apps</label>
+      </fieldset>
+      <button type="submit">Get early access</button>
+      <p class="notice">We collect your email only to tell you when the app is ready. We delete it if you unsubscribe, or 12 months after collection, whichever comes first.</p>
+    </form>
+    <p id="wl-status" class="status" role="status" aria-live="polite" hidden></p>
+    <div id="wl-referral" class="referral" hidden>
+      <p>Share your link — each friend who joins moves you up the list.</p>
+      <a data-share-link href="#"></a>
+    </div>
+    <p class="honest">Early access is free. Not live yet — we'll email you when it is.</p>
+  </div>
+</main>
+<footer>
+  <p><a href="../index.html">All pages</a></p>
+</footer>
+<script src="../assets/form.js"></script>
+</body>
+</html>
