@@ -4,9 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>배달·대리 기사 시간당 실수입 계산기</title>
-<meta name="description" content="배달 수입에서 수수료·기름값·보험료·세금을 빼고 실제 시급을 계산하는 무료 계산기.">
+<meta name="description" content="배달 수입에서 수수료·기름값·통행료·보험료·세금을 빼고 실제 시급을 계산하는 무료 계산기.">
 <meta property="og:title" content="오늘 번 돈, 시간당 얼마 남았을까?">
-<meta property="og:description" content="배달 수입에서 수수료·기름값·보험료·세금을 빼고 실제 시급을 계산합니다.">
+<meta property="og:description" content="수수료·기름값·통행료·보험료·세금을 빼고 실제 시급을 계산합니다.">
 <meta property="og:type" content="website">
 <link rel="stylesheet" href="../assets/style.css">
 <style>
@@ -20,6 +20,11 @@
   .wl-title { font-size: 1.15rem; margin: 0 0 4px; }
   .wl-sub { color: var(--muted); margin: 0 0 16px; }
   .checks .check { padding: 6px 0; margin: 0; }
+  .result .headline { font-size: 1.1rem; font-weight: 700; line-height: 1.5; margin: 4px 0 0; font-variant-numeric: tabular-nums; word-break: keep-all; }
+  .result .headline strong { font-size: 1.6rem; font-weight: 800; white-space: nowrap; }
+  .result .headline .amt { white-space: nowrap; }
+  .tax-custom { margin: 4px 0 0 30px; }
+  .tax-custom input:disabled { opacity: .5; }
 </style>
 <script src="../assets/config.js"></script>
 </head>
@@ -27,7 +32,7 @@
 <main>
   <p class="eyebrow">배달·대리 기사 시간당 실수입 계산기</p>
   <h1>오늘 번 돈, 시간당 얼마 남았을까?</h1>
-  <p class="sub">배달 수입에서 수수료·기름값·보험료·세금을 빼고 실제 시급을 계산합니다.</p>
+  <p class="sub">수수료·기름값·통행료·보험료·세금을 빼고 실제 시급을 계산합니다.</p>
 
   <form id="calc" class="card" novalidate>
     <fieldset>
@@ -40,12 +45,21 @@
       <input id="gross" type="number" inputmode="numeric" min="0" step="1" placeholder="예: 200000">
     </div>
     <div class="field">
+      <label for="extra">앱 밖 수입 (다른 플랫폼·현금 배달 등, 원) <span class="opt">(선택)</span></label>
+      <input id="extra" type="number" inputmode="numeric" min="0" step="1" placeholder="0" aria-describedby="extra-help">
+      <p id="extra-help" class="help">총 배달 수입에 더해서 계산합니다.</p>
+    </div>
+    <div class="field">
       <label for="fee">플랫폼·대행 수수료 (원)</label>
       <input id="fee" type="number" inputmode="numeric" min="0" step="1" placeholder="0">
     </div>
     <div class="field">
       <label for="fuel">기름값·충전비 (원)</label>
       <input id="fuel" type="number" inputmode="numeric" min="0" step="1" placeholder="0">
+    </div>
+    <div class="field">
+      <label for="toll">통행료·주차비 (원)</label>
+      <input id="toll" type="number" inputmode="numeric" min="0" step="1" placeholder="0">
     </div>
     <div class="field">
       <label for="vehicle">보험료·리스·렌트 등 차량 비용 (원, 해당 기간분)</label>
@@ -55,11 +69,17 @@
       <label for="other">기타 비용 (원)</label>
       <input id="other" type="number" inputmode="numeric" min="0" step="1" placeholder="0">
     </div>
-    <div class="field">
-      <label for="tax">세금 등으로 떼어 둘 비율 (%) <span class="opt">(선택)</span></label>
-      <input id="tax" type="number" inputmode="decimal" min="0" max="100" step="0.1" aria-describedby="tax-help">
-      <p id="tax-help" class="help">본인이 따로 모아 두는 비율을 넣으세요. 정확한 세액은 세무 신고 때 확정됩니다.</p>
-    </div>
+    <fieldset aria-describedby="tax-help">
+      <legend>세금</legend>
+      <label class="radio"><input type="radio" name="taxmode" value="3.3" checked> 원천징수 3.3% (현재)</label>
+      <label class="radio"><input type="radio" name="taxmode" value="2.2"> 2.2% (2027년 정부안, 국회 통과 전)</label>
+      <label class="radio"><input type="radio" name="taxmode" value="custom"> 직접 입력 (%)</label>
+      <div class="tax-custom">
+        <label for="tax" class="opt">떼어 둘 비율 (%)</label>
+        <input id="tax" type="number" inputmode="decimal" min="0" max="100" step="0.1" disabled>
+      </div>
+      <p id="tax-help" class="help">3.3%·2.2%는 받은 돈 전체(총수입)에 붙는 원천징수입니다. 직접 입력은 비용을 뺀 금액에 적용합니다.</p>
+    </fieldset>
     <div class="field">
       <label for="hours">일한 시간 (시간)</label>
       <input id="hours" type="number" inputmode="decimal" min="0" step="0.1" placeholder="예: 8.5">
@@ -68,7 +88,7 @@
 
     <div id="result" class="result" role="status" aria-live="polite" hidden>
       <p class="detail" id="r-label" style="margin:0"></p>
-      <p class="ratio" id="r-hourly"></p>
+      <p class="headline" id="r-hourly"></p>
       <p class="advice" id="r-compare"></p>
       <ul class="breakdown" id="r-breakdown"></ul>
       <p class="detail" id="r-note"></p>
@@ -106,6 +126,8 @@
 </main>
 <footer>
   <p>이 계산기는 참고용이며 세무 상담을 대신하지 않습니다.</p>
+  <p>원천징수는 미리 떼는 세금이며 5월 종합소득세 신고 때 정산됩니다. 세무 조언이 아닙니다.</p>
+  <p>출처: 2.2%: 2026년 세제개편 정부안(국회 통과 전, 2027.1.1 지급분부터 예정) — <a href="https://www.taxwatch.co.kr/article/tax/2026/08/05/0004" target="_blank" rel="noopener">택스워치 2026-08-05</a></p>
   <p><a href="../index.html">전체 페이지</a></p>
 </footer>
 <script>
@@ -127,18 +149,38 @@
     return (r > 0 ? "+" : "") + won(r);
   }
 
+  // v.taxMode: "withholding"(3.3%/2.2%) 또는 "custom"(직접 입력)
   function calc(v) {
-    var costs = v.fee + v.fuel + v.vehicle + v.other;
-    var beforeTax = v.gross - costs;
-    // 세금 비율은 비용을 뺀 금액에 적용. 손실일 때는 떼어 둘 금액이 없으므로 0.
-    var taxAmt = beforeTax > 0 ? beforeTax * (v.taxRate / 100) : 0;
+    var income = v.gross + (v.extra || 0);
+    var costs = v.fee + v.fuel + (v.toll || 0) + v.vehicle + v.other;
+    var beforeTax = income - costs;
+    var taxAmt;
+    if (v.taxMode === "withholding") {
+      // 원천징수는 지급액(총수입) 전체에 붙는다. 비용과 무관.
+      taxAmt = income > 0 ? income * (v.taxRate / 100) : 0;
+    } else {
+      // 직접 입력: 비용을 뺀 금액에 적용. 손실일 때는 떼어 둘 금액이 없으므로 0.
+      taxAmt = beforeTax > 0 ? beforeTax * (v.taxRate / 100) : 0;
+    }
     var net = beforeTax - taxAmt;
     var hourly = Math.round(net / v.hours);
-    return { costs: costs, beforeTax: beforeTax, taxAmt: taxAmt, net: net, hourly: hourly, diff: hourly - MIN_WAGE_2026 };
+    return { income: income, costs: costs, beforeTax: beforeTax, taxAmt: taxAmt, net: net, hourly: hourly, diff: hourly - MIN_WAGE_2026 };
   }
   window.driverCalc = calc;
 
   var form = document.getElementById("calc");
+  var taxInput = document.getElementById("tax");
+  function taxMode() {
+    return (form.querySelector('input[name="taxmode"]:checked') || {}).value || "3.3";
+  }
+  function syncTax() {
+    var custom = taxMode() === "custom";
+    taxInput.disabled = !custom;
+    if (custom) taxInput.focus();
+  }
+  Array.prototype.forEach.call(form.querySelectorAll('input[name="taxmode"]'), function (el) {
+    el.addEventListener("change", syncTax);
+  });
   form.addEventListener("submit", function (e) {
     e.preventDefault();
     var box = document.getElementById("result");
@@ -154,7 +196,7 @@
     if (!(hours > 0)) {
       elLabel.textContent = "";
       elHourly.textContent = "";
-      elHourly.className = "ratio";
+      elHourly.className = "headline";
       elCompare.textContent = "일한 시간을 0보다 크게 입력해 주세요.";
       elCompare.className = "advice";
       elNote.textContent = "시간을 넣어야 시간당 실수입을 계산할 수 있어요.";
@@ -162,25 +204,46 @@
     }
 
     var period = (form.querySelector('input[name="period"]:checked') || {}).value === "week" ? "일주일" : "하루";
+    var mode = taxMode();
+    var custom = mode === "custom";
     var v = {
-      gross: num("gross"), fee: num("fee"), fuel: num("fuel"),
-      vehicle: num("vehicle"), other: num("other"), taxRate: num("tax"), hours: hours
+      gross: num("gross"), extra: num("extra"), fee: num("fee"), fuel: num("fuel"), toll: num("toll"),
+      vehicle: num("vehicle"), other: num("other"),
+      taxMode: custom ? "custom" : "withholding",
+      taxRate: custom ? num("tax") : parseFloat(mode), hours: hours
     };
     var r = calc(v);
 
-    elLabel.textContent = period + " 기준 시간당 실수입";
-    elHourly.textContent = won(r.hourly);
-    elHourly.className = "ratio" + (r.hourly < 0 ? " neg" : "");
+    elLabel.textContent = period + " 기준";
+    elHourly.textContent = "";
+    elHourly.className = "headline";
+    var parts = [
+      ["받은 돈 ", won(r.income), false],
+      [" → 비용·세금 빼고 남은 돈 ", won(r.net), r.net < 0],
+      [" → 실제 시급 ", won(r.hourly), r.hourly < 0]
+    ];
+    parts.forEach(function (p, i) {
+      elHourly.appendChild(document.createTextNode(p[0]));
+      var el = document.createElement(i === 2 ? "strong" : "span");
+      el.className = "amt" + (p[2] ? " neg" : "");
+      el.textContent = p[1];
+      elHourly.appendChild(el);
+    });
     elCompare.textContent = "2026년 최저시급 10,320원과 비교: " + signedWon(r.diff);
     elCompare.className = "advice" + (r.diff < 0 ? " neg" : "");
 
+    var taxRow = custom
+      ? ["세금 등으로 떼어 둘 금액 (" + v.taxRate + "%, 비용 뺀 " + won(Math.max(r.beforeTax, 0)) + " 기준)", won(-r.taxAmt)]
+      : ["원천징수(미리 떼는 세금) (" + v.taxRate + "%, 총수입 " + won(r.income) + " 기준)", won(-r.taxAmt)];
     var rows = [
       ["총 배달 수입", won(v.gross)],
+      ["앱 밖 수입", won(v.extra)],
       ["플랫폼·대행 수수료", won(-v.fee)],
       ["기름값·충전비", won(-v.fuel)],
+      ["통행료·주차비", won(-v.toll)],
       ["차량 비용", won(-v.vehicle)],
       ["기타 비용", won(-v.other)],
-      ["세금 등 떼어 둘 금액 (" + v.taxRate + "%)", won(-r.taxAmt)],
+      taxRow,
       ["일한 시간", v.hours + "시간"],
       [period + " 순수입", won(r.net)]
     ];
@@ -194,7 +257,9 @@
     });
     elNote.textContent = r.net < 0
       ? "비용이 수입보다 많아 손실입니다. 입력값을 다시 확인해 보세요."
-      : "입력하신 숫자만으로 계산했습니다. 세금 비율을 비워 두면 0%로 계산합니다.";
+      : (custom
+        ? "입력하신 숫자만으로 계산했습니다. 직접 입력 비율을 비워 두면 0%로 계산합니다."
+        : "입력하신 숫자만으로 계산했습니다. 원천징수는 5월 종합소득세 신고 때 정산됩니다.");
   });
 })();
 </script>
