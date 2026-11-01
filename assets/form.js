@@ -28,6 +28,7 @@
     var myCode = randomCode();
     setHidden(form, "ref", incoming);
     setHidden(form, "my_ref", myCode);
+    setHidden(form, "from", (params.get("from") || "").replace(/[^a-z0-9-]/gi, "").slice(0, 24));
 
     var status = document.getElementById(form.dataset.status);
     var btn = form.querySelector('button[type="submit"]');
