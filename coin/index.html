@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>코인 조건알림 봇 (가칭)</title>
+<meta name="description" content="거래량 급증, 가격 급변, 신규 상장 공지처럼 내가 정한 조건이 맞으면 텔레그램으로 알려 드립니다. 투자 추천은 하지 않습니다.">
+<meta property="og:title" content="화면을 계속 볼 수 없을 때, 내 조건만 텔레그램으로.">
+<meta property="og:description" content="내가 정한 조건이 맞으면 사실만 알려 드리는 코인 알림 봇. 첫 달 무료 예정.">
+<meta property="og:type" content="website">
+<link rel="stylesheet" href="../assets/style.css">
+<style>
+  :root { --accent: #0f766e; }
+  .examples { list-style: none; padding: 0; margin: 20px 0 8px; display: grid; gap: 8px; }
+  .examples li { padding: 12px 14px; border-radius: 12px; background: rgba(127,127,127,.08); font-size: .95rem; line-height: 1.5; }
+  .examples code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .9em; word-break: keep-all; }
+  .not { margin: 16px 0 0; padding: 12px 14px; border-left: 4px solid var(--accent); background: rgba(127,127,127,.06); font-size: .92rem; line-height: 1.55; }
+  fieldset { border: 0; margin: 0 0 16px; padding: 0; }
+  fieldset legend { font-weight: 700; margin-bottom: 8px; }
+  .checks label { display: flex; gap: 8px; align-items: center; margin: 6px 0; font-weight: 400; }
+</style>
+<script src="../assets/config.js"></script>
+</head>
+<body>
+<main>
+  <p class="eyebrow">코인 조건알림 봇 (가칭)</p>
+  <h1>화면을 계속 볼 수 없을 때, 내 조건만 텔레그램으로.</h1>
+  <p class="sub">내가 고른 조건이 맞는 순간, 텔레그램으로 사실만 알려 드립니다. 여러 거래소를 한곳에서 봅니다.</p>
+
+  <ul class="examples" aria-label="알림 예시">
+    <li>📈 <code>XRP · 5분 거래량이 평소의 6배</code></li>
+    <li>⚡ <code>OO코인 · 3분 사이 +4.2%</code></li>
+    <li>📢 <code>업비트 · 신규 상장 공지 1건</code></li>
+    <li>🌏 <code>김치 프리미엄 · 설정한 범위(3%) 넘음</code></li>
+  </ul>
+  <p class="not"><strong>사라·팔라는 말은 하지 않습니다.</strong> 조건과 숫자만 알려 드리고, 판단은 직접 하십시오. 투자 자문이나 추천 서비스가 아닙니다.</p>
+
+  <div class="card" style="margin-top:24px">
+    <form data-waitlist data-status="wl-status"
+          data-soon="곧 열립니다. 아직 신청이 접수되지 않았습니다."
+          data-thanks="신청해 주셔서 감사합니다. 첫 달 무료 체험이 열리면 알려 드릴게요."
+          data-error="접수되지 않았습니다. 잠시 후 다시 시도해 주세요.">
+      <input type="hidden" name="item" value="coin">
+      <input type="hidden" name="_subject" value="Waitlist: coin">
+      <div class="field">
+        <label for="email">이메일</label>
+        <input id="email" name="email" type="email" required autocomplete="email" placeholder="you@example.com">
+      </div>
+      <fieldset class="checks">
+        <legend>주로 쓰는 거래소 (선택)</legend>
+        <label><input type="checkbox" name="exchange" value="upbit"> 업비트</label>
+        <label><input type="checkbox" name="exchange" value="bithumb"> 빗썸</label>
+        <label><input type="checkbox" name="exchange" value="coinone"> 코인원</label>
+        <label><input type="checkbox" name="exchange" value="korbit"> 코빗</label>
+        <label><input type="checkbox" name="exchange" value="binance"> 바이낸스</label>
+      </fieldset>
+      <fieldset class="checks">
+        <legend>가장 먼저 받고 싶은 알림 (선택)</legend>
+        <label><input type="checkbox" name="want" value="volume"> 거래량 급증</label>
+        <label><input type="checkbox" name="want" value="price"> 짧은 시간 가격 급변</label>
+        <label><input type="checkbox" name="want" value="listing"> 신규 상장·유의 종목 공지</label>
+        <label><input type="checkbox" name="want" value="orderbook"> 호가 잔량 급변</label>
+        <label><input type="checkbox" name="want" value="kimchi"> 김치 프리미엄</label>
+      </fieldset>
+      <div class="field">
+        <label for="price">한 달 얼마면 쓰시겠어요? (선택)</label>
+        <select id="price" name="price">
+          <option value="">선택해 주세요</option>
+          <option>무료만 쓸래요</option>
+          <option>월 3,000원 이하</option>
+          <option>월 5,000원 정도</option>
+          <option>월 10,000원 정도</option>
+          <option>더 내도 됨</option>
+        </select>
+      </div>
+      <button type="submit">첫 달 무료 체험 신청</button>
+      <p class="notice">이메일은 출시 안내에만 쓰고, 수신 거부 시 또는 수집 후 12개월이 지나면 삭제합니다. 아직 서비스 전이며, 결제 정보는 받지 않습니다.</p>
+    </form>
+    <p id="wl-status" class="status" role="status" aria-live="polite" hidden></p>
+  </div>
+</main>
+<footer>
+  <p>이 서비스는 투자 자문·추천이 아니며 수익을 보장하지 않습니다. 가상자산 투자의 판단과 책임은 이용자 본인에게 있습니다.</p>
+  <p>알림은 거래소가 공개하는 시세·공지 정보를 가공한 것으로, 지연되거나 틀릴 수 있습니다.</p>
+  <p><a href="../index.html">전체 페이지</a></p>
+</footer>
+<script src="../assets/form.js"></script>
+</body>
+</html>
