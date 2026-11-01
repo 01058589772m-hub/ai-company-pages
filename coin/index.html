@@ -17,6 +17,10 @@
   .not { margin: 16px 0 0; padding: 12px 14px; border-left: 4px solid var(--accent); background: rgba(127,127,127,.06); font-size: .92rem; line-height: 1.55; }
   fieldset { border: 0; margin: 0 0 16px; padding: 0; }
   fieldset legend { font-weight: 700; margin-bottom: 8px; }
+  details.more { margin: 16px 0 0; }
+  details.more summary { cursor: pointer; font-weight: 600; padding: 10px 0; }
+  details.more[open] summary { margin-bottom: 8px; }
+  .trust { list-style: none; padding: 0; margin: 14px 0 0; display: grid; gap: 6px; font-size: .92rem; }
   .checks label { display: flex; gap: 8px; align-items: center; margin: 6px 0; font-weight: 400; }
 </style>
 <script src="../assets/config.js"></script>
@@ -45,6 +49,10 @@
   </ul>
   <p class="not"><strong>사라·팔라는 말은 하지 않습니다.</strong> 조건과 숫자만 알려 드리고, 판단은 직접 하십시오. 투자 자문이나 추천 서비스가 아닙니다.</p>
 
+  <ul class="trust" aria-label="안심 약속">
+    <li>🔒 거래소 <strong>API 키·비밀번호·지갑 연결을 절대 요구하지 않습니다.</strong> 요구하는 곳이 있다면 사칭입니다.</li>
+    <li>🧾 매매 기능이 없습니다. 공개된 시세와 공식 공지만 봅니다.</li>
+  </ul>
   <div class="card" style="margin-top:24px">
     <form data-waitlist data-status="wl-status"
           data-soon="곧 열립니다. 아직 신청이 접수되지 않았습니다."
@@ -56,6 +64,8 @@
         <label for="email">이메일</label>
         <input id="email" name="email" type="email" required autocomplete="email" placeholder="you@example.com">
       </div>
+      <details class="more">
+        <summary>(선택) 원하는 기능을 알려 주시면 먼저 만듭니다</summary>
       <fieldset class="checks">
         <legend>주로 쓰는 거래소 (선택)</legend>
         <label><input type="checkbox" name="exchange" value="upbit"> 업비트</label>
@@ -88,8 +98,10 @@
           <option value="higher-ok">기능이 좋으면 더 내도 됨</option>
         </select>
       </div>
-      <button type="submit">첫 달 무료 체험 신청</button>
-      <p class="notice">이메일은 출시 안내에만 쓰고, 수신 거부 시 또는 수집 후 12개월이 지나면 삭제합니다. 아직 서비스 전이며, 결제 정보는 받지 않습니다.</p>
+      </details>
+      <button type="submit">이메일만 넣고 무료 체험 신청</button>
+      <p class="notice">카드·결제 정보 없음. 체험이 끝나도 <strong>자동 결제되지 않습니다</strong> — 계속 쓸지는 그때 직접 고르세요.</p>
+      <p class="notice">이메일은 출시 안내에만 쓰고, 수신 거부 시 또는 수집 후 12개월이 지나면 삭제합니다.</p>
     </form>
     <p id="wl-status" class="status" role="status" aria-live="polite" hidden></p>
   </div>
